@@ -1,0 +1,42 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  forge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v5
+      - name: fetch Tidings jar
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tidings_version=$(sed -n 's/^tidings_version=//p' gradle.properties)
+          minecraft_version=$(sed -n 's/^minecraft_version=//p' gradle.properties)
+          mkdir -p libs
+          gh release download "v$tidings_version" --repo tidingsmc/tidingsmc --dir libs \
+            --pattern "tidings-forge-$minecraft_version-$tidings_version.jar"
+      - name: build
+        run: ./gradlew build -Pmod_version="${GITHUB_REF_NAME#v}"
+      - uses: actions/upload-artifact@v5
+        with:
+          name: tidings-vanilla-forge
+          path: build/libs/*.jar
+      - name: create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          prerelease=""
+          case "$GITHUB_REF_NAME" in *-*) prerelease="--prerelease" ;; esac
+          gh release create "$GITHUB_REF_NAME" build/libs/*.jar \
+            --title "$GITHUB_REF_NAME" --generate-notes --verify-tag $prerelease
