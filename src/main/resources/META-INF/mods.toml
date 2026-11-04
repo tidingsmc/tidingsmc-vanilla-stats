@@ -8,7 +8,7 @@ version="${mod_version}"
 displayName="${mod_name}"
 authors="${mod_authors}"
 description='''${mod_description}'''
-# Server-only: players can join without installing the mod.
+# Server-only
 displayTest="IGNORE_SERVER_VERSION"
 
 [[dependencies.${mod_id}]]
