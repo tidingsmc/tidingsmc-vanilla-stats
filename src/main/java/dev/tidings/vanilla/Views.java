@@ -1,18 +1,5 @@
 package dev.tidings.vanilla;
 
-import dev.tidings.core.PlayerProfile;
-import dev.tidings.core.addon.AddonContext;
-import dev.tidings.core.addon.AddonError;
-import dev.tidings.core.addon.Block;
-import dev.tidings.core.addon.Link;
-import dev.tidings.core.addon.Request;
-import dev.tidings.core.addon.View;
-
-import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.DisplayInfo;
-import net.minecraft.server.MinecraftServer;
-import net.minecraftforge.server.ServerLifecycleHooks;
-
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -21,6 +8,18 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+
+import dev.tidings.core.PlayerProfile;
+import dev.tidings.core.addon.AddonContext;
+import dev.tidings.core.addon.AddonError;
+import dev.tidings.core.addon.Block;
+import dev.tidings.core.addon.Link;
+import dev.tidings.core.addon.Request;
+import dev.tidings.core.addon.View;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.DisplayInfo;
+import net.minecraft.server.MinecraftServer;
+import net.minecraftforge.server.ServerLifecycleHooks;
 
 final class Views {
     /** How many players the leaderboard lists */
@@ -276,7 +275,6 @@ final class Views {
         return profile(tidings, s.id(), s.name());
     }
 
-    /** The player's Tidings profile or one with just their name if they never paired a phone. */
     static PlayerProfile profile(AddonContext tidings, UUID id, String name) {
         return tidings.player(id).orElse(new PlayerProfile(id, name, null));
     }
