@@ -103,8 +103,8 @@ final class StatsCache {
     private static PlayerStats live(ServerPlayer player, List<Advancement> shown) {
         ServerStatsCounter counter = player.getStats();
         Map<String, Integer> custom = new HashMap<>();
-        for (ResourceLocation stat : Stats.CUSTOM.getRegistry().keySet()) {
-            int value = counter.getValue(Stats.CUSTOM.get(stat));
+        for (ResourceLocation stat : Stats.CUSTOM.getRegistry()) {
+            int value = counter.getValue(Stats.CUSTOM, stat);
             if (value != 0) custom.put(stat.toString(), value);
         }
         Map<String, Instant> done = new HashMap<>();
